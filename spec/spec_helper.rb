@@ -3,13 +3,11 @@ require 'webmock/rspec'
 require 'coveralls'
 Coveralls.wear!
 
-require File.join(File.dirname(__FILE__), '..', 'lib', 'transmission')
-require File.join(File.dirname(__FILE__), 'helpers', 'stubs')
+require_relative File.join('..', 'lib', 'transmission')
+require_relative File.join('helpers', 'stubs')
 
 ENV['TESTING'] = 'true'
 
 RSpec.configure do |config|
-
   config.include Stubs
-
 end

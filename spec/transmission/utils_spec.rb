@@ -66,5 +66,4 @@ describe Transmission::Utils do
       end
     end
   end
-
 end

@@ -1,7 +1,5 @@
 describe Transmission::Model::Session do
-
   describe '.get' do
-
     describe 'with configuration' do
       before :each do
         Transmission::Config.set
@@ -28,14 +26,14 @@ describe Transmission::Model::Session do
   end
 
   describe '#save!' do
-    let(:rpc) {Transmission::RPC.new}
+    let(:rpc) { Transmission::RPC.new }
 
     before :each do
-      stub_const("Transmission::Arguments::SessionSet::ATTRIBUTES", [{field: 'name'}])
+      stub_const('Transmission::Arguments::SessionSet::ATTRIBUTES', [{ field: 'name' }])
       stub_get_session(Transmission::Fields::SessionGet.new.to_fields)
       stub_rpc_request
-          .with(body: session_set_body({name: 'new value'}))
-          .to_return(successful_response)
+        .with(body: session_set_body(name: 'new value'))
+        .to_return(successful_response)
     end
 
     it 'should send the right parameters' do
@@ -46,19 +44,19 @@ describe Transmission::Model::Session do
   end
 
   describe '#to_json' do
-    let(:session) { Transmission::Model::Session.new({'id' => 1}, nil) }
+    let(:session) { Transmission::Model::Session.new({ 'id' => 1 }, nil) }
 
     it 'should return its attributes' do
-      expect(session.to_json).to eq({'id' => 1})
+      expect(session.to_json).to eq('id' => 1)
     end
   end
 
   describe '#method_missing' do
-    let(:session) { Transmission::Model::Session.new({'id' => 1, 'name' => 'some name', 'some-key' => 'some-value'}, nil) }
+    let(:session) { Transmission::Model::Session.new({ 'id' => 1, 'name' => 'some name', 'some-key' => 'some-value' }, nil) }
 
     before :each do
-      stub_const("Transmission::Fields::SessionGet::ATTRIBUTES", [{field: 'id'}, {field: 'name'}, {field: 'some-key'}])
-      stub_const("Transmission::Arguments::SessionSet::ATTRIBUTES", [{field: 'name'}])
+      stub_const('Transmission::Fields::SessionGet::ATTRIBUTES', [{ field: 'id' }, { field: 'name' }, { field: 'some-key' }])
+      stub_const('Transmission::Arguments::SessionSet::ATTRIBUTES', [{ field: 'name' }])
     end
 
     describe 'with existing attributes' do
@@ -76,17 +74,12 @@ describe Transmission::Model::Session do
 
     describe 'with none existing attributes' do
       it 'should raise error' do
-        expect {
-          session.i_dont_exist
-        }.to raise_error(NoMethodError)
+        expect { session.i_dont_exist }.to raise_error(NoMethodError)
       end
 
       it 'should raise error' do
-        expect {
-          session.i_dont_exist = 'some value'
-        }.to raise_error(NoMethodError)
+        expect { session.i_dont_exist = 'some value' }.to raise_error(NoMethodError)
       end
     end
   end
-
 end

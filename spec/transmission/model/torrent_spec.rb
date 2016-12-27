@@ -1,11 +1,9 @@
 describe Transmission::Model::Torrent do
-
   describe '.all' do
-
     describe 'with configuration' do
       before :each do
         Transmission::Config.set
-        stub_get_torrent({}, [{id: 1}])
+        stub_get_torrent({}, [{ id: 1 }])
       end
 
       it 'should return a Torrent model instance' do
@@ -18,8 +16,8 @@ describe Transmission::Model::Torrent do
       before :each do
         @rpc = Transmission::RPC.new
         stub_rpc_request
-            .with(body: torrent_get_body)
-            .to_return(successful_response({arguments: {torrents: [{id: 1}]}}))
+          .with(body: torrent_get_body)
+          .to_return(successful_response( arguments: { torrents: [{ id: 1 }] }))
       end
 
       it 'should return a Torrent model instance' do
@@ -27,15 +25,13 @@ describe Transmission::Model::Torrent do
         expect(torrents).to be_a(Transmission::Model::Torrent)
       end
     end
-
   end
 
   describe '.find' do
-
     describe 'with configuration' do
       before :each do
         Transmission::Config.set
-        stub_get_torrent({ids: [1]}, [{id: 1}])
+        stub_get_torrent({ ids: [1] }, [{ id: 1 }])
       end
 
       it 'should return a Torrent instance' do
@@ -47,7 +43,7 @@ describe Transmission::Model::Torrent do
     describe 'with connector' do
       before :each do
         @rpc = Transmission::RPC.new
-        stub_get_torrent({ids: [1]}, [{id: 1}])
+        stub_get_torrent({ ids: [1] }, [{ id: 1 }])
       end
 
       it 'should return a Torrent instance' do
@@ -59,7 +55,7 @@ describe Transmission::Model::Torrent do
     describe 'with invalid id' do
       before :each do
         @rpc = Transmission::RPC.new
-        stub_get_torrent({ids: [1]}, [])
+        stub_get_torrent({ ids: [1] }, [])
       end
 
       it 'should raise error' do
@@ -72,7 +68,7 @@ describe Transmission::Model::Torrent do
     describe 'with multiple ids' do
       before :each do
         @rpc = Transmission::RPC.new
-        stub_get_torrent({ids: [1, 2]}, [{id: 1}, {id: 2}])
+        stub_get_torrent({ ids: [1, 2] }, [{ id: 1 }, { id: 2 }])
       end
 
       it 'should return a Torrent model instance' do
@@ -85,22 +81,20 @@ describe Transmission::Model::Torrent do
         expect(torrent.ids).to eq([1, 2])
       end
     end
-
   end
 
   describe '.add' do
-
     describe 'with configuration' do
       before :each do
         Transmission::Config.set
         stub_rpc_request
-            .with(body: torrent_add_body({filename: 'torrent_file'}))
-            .to_return(successful_response({arguments: {'torrent-added' => {id: 1}}}))
-        stub_get_torrent({ids: [1]}, [{id: 1}])
+          .with(body: torrent_add_body(filename: 'torrent_file'))
+          .to_return(successful_response(arguments: { 'torrent-added' => { id: 1 } }))
+        stub_get_torrent({ ids: [1] }, [{ id: 1 }])
       end
 
       it 'should return a Torrent instance' do
-        torrent = Transmission::Model::Torrent.add arguments: {filename: 'torrent_file'}
+        torrent = Transmission::Model::Torrent.add arguments: { filename: 'torrent_file' }
         expect(torrent).to be_a(Transmission::Model::Torrent)
       end
     end
@@ -109,25 +103,24 @@ describe Transmission::Model::Torrent do
       before :each do
         Transmission::Config.set
         stub_rpc_request
-            .with(body: torrent_add_body({filename: 'torrent_file'}))
-            .to_return(unsuccessful_response({result: 'duplicate torrent'}))
+          .with(body: torrent_add_body(filename: 'torrent_file'))
+          .to_return(unsuccessful_response(result: 'duplicate torrent'))
       end
 
       it 'should raise error' do
         expect {
-          Transmission::Model::Torrent.add arguments: {filename: 'torrent_file'}
+          Transmission::Model::Torrent.add arguments: { filename: 'torrent_file' }
         }.to raise_error(Transmission::RPC::Connector::ConnectionError)
       end
     end
-
   end
 
   describe '.start_all!' do
     before :each do
       Transmission::Config.set
       stub_rpc_request
-          .with(body: torrent_method_body('torrent-start', {}))
-          .to_return(successful_response)
+        .with(body: torrent_method_body('torrent-start', {}))
+        .to_return(successful_response)
     end
 
     it 'should start all torrents' do
@@ -139,8 +132,8 @@ describe Transmission::Model::Torrent do
     before :each do
       Transmission::Config.set
       stub_rpc_request
-          .with(body: torrent_method_body('torrent-stop', {}))
-          .to_return(successful_response)
+        .with(body: torrent_method_body('torrent-stop', {}))
+        .to_return(successful_response)
     end
 
     it 'should start all torrents' do
@@ -151,8 +144,8 @@ describe Transmission::Model::Torrent do
   describe '#set_location' do
     before :each do
       Transmission::Config.set
-      stub_get_torrent({ids: [1]}, [{id: 1}])
-      stub_set_location_torrent({location: '/some/location', move: false, ids: [1]})
+      stub_get_torrent({ ids: [1] }, [{ id: 1 }])
+      stub_set_location_torrent(location: '/some/location', move: false, ids: [1])
     end
 
     it 'should set a new location' do
@@ -162,14 +155,13 @@ describe Transmission::Model::Torrent do
   end
 
   describe '#delete!' do
-
     describe 'with configuration' do
       before :each do
         Transmission::Config.set
-        stub_get_torrent({ids: [1]}, [{id: 1}])
+        stub_get_torrent({ ids: [1] }, [{ id: 1 }])
         stub_rpc_request
-            .with(body: torrent_remove_body({:ids => [1], 'delete-local-data' => false}))
-            .to_return(successful_response({arguments: {torrents: [{id: 1}]}}))
+          .with(body: torrent_remove_body(:ids => [1], 'delete-local-data' => false))
+          .to_return(successful_response(arguments: { torrents: [{ id: 1 }] }))
       end
 
       it 'should remove the torrent file' do
@@ -182,14 +174,14 @@ describe Transmission::Model::Torrent do
     describe 'with connector' do
       before :each do
         @rpc = Transmission::RPC.new
-        stub_get_torrent({ids: [1]}, [{id: 1}])
+        stub_get_torrent({ ids: [1] }, [{ id: 1 }])
         stub_rpc_request
-            .with(body: torrent_remove_body({:ids => [1], 'delete-local-data' => false}))
-            .to_return(successful_response({arguments: {torrents: [{id: 1}]}}))
+          .with(body: torrent_remove_body(:ids => [1], 'delete-local-data' => false))
+          .to_return(successful_response(arguments: { torrents: [{ id: 1 }] }))
       end
 
       it 'should remove the torrent file' do
-        torrent = Transmission::Model::Torrent.find 1, :connector => @rpc
+        torrent = Transmission::Model::Torrent.find 1, connector: @rpc
         torrent.delete!
         expect(torrent.deleted).to eq(true)
       end
@@ -198,19 +190,18 @@ describe Transmission::Model::Torrent do
     describe 'with multiple ids' do
       before :each do
         @rpc = Transmission::RPC.new
-        stub_get_torrent({ids: [1, 2]}, [{id: 1}, {id: 2}])
+        stub_get_torrent({ ids: [1, 2] }, [{ id: 1 }, { id: 2 }])
         stub_rpc_request
-            .with(body: torrent_remove_body({:ids => [1, 2], 'delete-local-data' => false}))
-            .to_return(successful_response({arguments: {torrents: [{id: 1}, {id: 2}]}}))
+          .with(body: torrent_remove_body(:ids => [1, 2], 'delete-local-data' => false))
+            .to_return(successful_response(arguments: { torrents: [{ id: 1 }, { id: 2 }]} ))
       end
 
       it 'should remove the torrent files' do
-        torrent = Transmission::Model::Torrent.find [1, 2], :connector => @rpc
+        torrent = Transmission::Model::Torrent.find [1, 2], connector: @rpc
         torrent.delete!
         expect(torrent.deleted).to eq(true)
       end
     end
-
   end
 
   describe '#is_multi?' do
