@@ -1,7 +1,6 @@
 module Transmission
   module Model
     class SessionStats
-
       attr_accessor :attributes, :connector
 
       def initialize(session_object, connector)

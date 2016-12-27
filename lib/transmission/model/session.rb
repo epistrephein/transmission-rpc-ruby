@@ -24,10 +24,10 @@ module Transmission
         if string[-1] == '='
           string = string[0..-2]
           key = Transmission::Arguments::SessionSet.real_key string
-          return @attributes[key] = args.first if !!key
+          return @attributes[key] = args.first unless key.nil?
         else
           key = Transmission::Fields::SessionGet.real_key string
-          return @attributes[key] if !!key
+          return @attributes[key] unless key.nil?
         end
         super
       end

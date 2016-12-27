@@ -1,10 +1,10 @@
-require File.join(File.dirname(__FILE__), 'transmission', 'rpc')
-require File.join(File.dirname(__FILE__), 'transmission', 'model')
-require File.join(File.dirname(__FILE__), 'transmission', 'config')
-require File.join(File.dirname(__FILE__), 'transmission', 'fields')
-require File.join(File.dirname(__FILE__), 'transmission', 'arguments')
-require File.join(File.dirname(__FILE__), 'transmission', 'utils')
+require_relative 'transmission/rpc'
+require_relative 'transmission/model'
+require_relative 'transmission/config'
+require_relative 'transmission/fields'
+require_relative 'transmission/arguments'
+require_relative 'transmission/utils'
 
 module Transmission
-  VERSION = '0.3.1'
+  VERSION = '0.3.1'.freeze
 end

@@ -1,7 +1,7 @@
-require File.join(File.dirname(__FILE__), 'fields', 'torrent_get')
-require File.join(File.dirname(__FILE__), 'fields', 'session_get')
-require File.join(File.dirname(__FILE__), 'fields', 'session_stats')
-require File.join(File.dirname(__FILE__), 'utils')
+require_relative 'fields/torrent_get'
+require_relative 'fields/session_get'
+require_relative 'fields/session_stats'
+require_relative 'utils'
 
 module Transmission
   class Fields
@@ -13,7 +13,7 @@ module Transmission
 
     def initialize(fields = nil)
       @fields = fields.inject([]) do |fields, field|
-        found = self.class::ATTRIBUTES.select { |attr| attr[:field] == field}
+        found = self.class::ATTRIBUTES.select { |attr| attr[:field] == field }
         raise Transmission::Fields::InvalidField, field if found.empty?
         fields << field
       end if fields
@@ -37,6 +37,5 @@ module Transmission
         option_key key, self::ATTRIBUTES
       end
     end
-
   end
 end

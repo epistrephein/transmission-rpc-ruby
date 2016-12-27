@@ -12,7 +12,7 @@ module Transmission
       def initialize(options = {})
         @host = options[:host] || 'localhost'
         @port = options[:port] || 9091
-        @ssl  = !!options[:ssl]
+        @ssl  = options[:ssl] || false
         @credentials = options[:credentials] || nil
         @path = options[:path] || '/transmission/rpc'
         @session_id = options[:session_id] || ''
@@ -40,7 +40,7 @@ module Transmission
         @response = response
         if response.status == 409
           @session_id = response.headers['x-transmission-session-id']
-          return self.post(params)
+          return post(params)
         end
         body = json_body response
         raise AuthError if response.status == 401
@@ -50,7 +50,7 @@ module Transmission
 
       def connection
         @connection ||= begin
-          connection = Faraday.new(:url => "#{scheme}://#{@host}:#{@port}", :ssl => {:verify => false}) do |faraday|
+          connection = Faraday.new(url: "#{scheme}://#{@host}:#{@port}", ssl: { verify: false }) do |faraday|
             faraday.request  :url_encoded
             faraday.response :logger
             faraday.adapter  Faraday.default_adapter

@@ -1,8 +1,7 @@
-require File.join(File.dirname(__FILE__), 'rpc', 'connector')
+require_relative 'rpc/connector'
 
 module Transmission
   class RPC
-
     attr_accessor :session, :connector
 
     def initialize(options = {})
@@ -11,13 +10,13 @@ module Transmission
 
     def get_session(fields = nil)
       fields = Transmission::Fields::SessionGet.new(fields)
-      arguments = {fields: fields.to_fields}
+      arguments = { fields: fields.to_fields }
       @connector.post method: 'session-get', arguments: arguments
     end
 
     def get_session_stats(fields = nil)
       fields = Transmission::Fields::SessionStats.new(fields)
-      arguments = {fields: fields.to_fields}
+      arguments = { fields: fields.to_fields }
       @connector.post method: 'session-stats', arguments: arguments
     end
 
@@ -39,7 +38,7 @@ module Transmission
 
     def get_torrent(ids, fields = nil)
       fields = Transmission::Fields::TorrentGet.new(fields)
-      arguments = {fields: fields.to_fields}
+      arguments = { fields: fields.to_fields }
       arguments[:ids] = ids if ids.is_a? Array
       @connector.post method: 'torrent-get', arguments: arguments
     end
@@ -67,7 +66,7 @@ module Transmission
     end
 
     def remove_torrent(ids, delete_local_data = false)
-      @connector.post method: 'torrent-remove', arguments: {ids: ids, 'delete-local-data' => delete_local_data}
+      @connector.post method: 'torrent-remove', arguments: { ids: ids, 'delete-local-data' => delete_local_data }
     end
 
     def start_torrent(ids)
@@ -113,6 +112,5 @@ module Transmission
       arguments[:ids] = ids if ids.is_a? Array
       arguments
     end
-
   end
 end

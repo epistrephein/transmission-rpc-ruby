@@ -101,10 +101,10 @@ module Transmission
         if string[-1] == '='
           string = string[0..-2]
           key = Transmission::Arguments::TorrentSet.real_key string
-          return @attributes[key] = args.first if !!key
+          return @attributes[key] = args.first unless key.nil?
         else
           key = Transmission::Fields::TorrentGet.real_key string
-          return @attributes[key] if !!key
+          return @attributes[key] unless key.nil?
         end
         super
       end
@@ -120,7 +120,7 @@ module Transmission
           rpc = options[:connector] || connector
           ids = id.is_a?(Array) ? id : [id]
           body = rpc.get_torrent ids, options[:fields]
-          raise TorrentNotFoundError if body['torrents'].size == 0
+          raise TorrentNotFoundError if body['torrents'].size.zero?
           Torrent.new body['torrents'], rpc
         end
 

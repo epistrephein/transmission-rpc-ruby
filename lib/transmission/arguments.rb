@@ -1,8 +1,8 @@
-require File.join(File.dirname(__FILE__), 'arguments', 'torrent_add')
-require File.join(File.dirname(__FILE__), 'arguments', 'torrent_set')
-require File.join(File.dirname(__FILE__), 'arguments', 'session_set')
-require File.join(File.dirname(__FILE__), 'arguments', 'location_set')
-require File.join(File.dirname(__FILE__), 'utils')
+require_relative 'arguments/torrent_add'
+require_relative 'arguments/torrent_set'
+require_relative 'arguments/session_set'
+require_relative 'arguments/location_set'
+require_relative 'utils'
 
 module Transmission
   class Arguments
@@ -46,6 +46,5 @@ module Transmission
         end
       end
     end
-
   end
 end
