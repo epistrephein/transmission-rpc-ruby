@@ -84,6 +84,7 @@ module Transmission
         @ids = torrents.ids
         @attributes = torrents.attributes
         @torrents = torrents.torrents
+        self
       end
 
       def to_json
