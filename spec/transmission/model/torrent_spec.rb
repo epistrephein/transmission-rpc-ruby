@@ -222,35 +222,35 @@ describe Transmission::Model::Torrent do
   end
 
   describe '#to_json' do
-    let(:torrents) { Transmission::Model::Torrent.new([{'id' => 1}, {'id' => 2}], nil) }
-    let(:torrent) { Transmission::Model::Torrent.new([{'id' => 1}], nil) }
+    let(:torrents) { Transmission::Model::Torrent.new([{ 'id' => 1 }, { 'id' => 2 }], nil) }
+    let(:torrent) { Transmission::Model::Torrent.new([{ 'id' => 1 }], nil) }
 
     describe 'with multiple torrents' do
       it 'should return true' do
-        expect(torrents.to_json).to eq([{'id' => 1}, {'id' => 2}])
+        expect(torrents.to_json).to eq([{ 'id' => 1 }, { 'id' => 2 }])
       end
     end
 
     describe 'with single torrent' do
       it 'should return false' do
-        expect(torrent.to_json).to eq({'id' => 1})
+        expect(torrent.to_json).to eq({ 'id' => 1 })
       end
     end
   end
 
-  describe '#finished?' do
-    let(:unfinished_torrent) { Transmission::Model::Torrent.new([{'id' => 1, 'percentDone' => 0.5}], nil) }
-    let(:finished_torrent) { Transmission::Model::Torrent.new([{'id' => 1, 'percentDone' => 1}], nil) }
+  describe '#completed?' do
+    let(:completed_torrent) { Transmission::Model::Torrent.new([{ 'id' => 1, 'percentDone' => 1 }], nil) }
+    let(:incomplete_torrent) { Transmission::Model::Torrent.new([{ 'id' => 1, 'percentDone' => 0.5 }], nil) }
 
-    describe 'with finished torrent' do
+    describe 'with completed torrent' do
       it 'should return true' do
-        expect(finished_torrent.finished?).to eq(true)
+        expect(completed_torrent.completed?).to eq(true)
       end
     end
 
     describe 'with unfinished torrent' do
       it 'should return false' do
-        expect(unfinished_torrent.finished?).to eq(false)
+        expect(incomplete_torrent.completed?).to eq(false)
       end
     end
   end
