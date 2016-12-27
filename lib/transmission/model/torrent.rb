@@ -75,9 +75,10 @@ module Transmission
         @ids.size > 1
       end
 
-      def finished?
-        self.percent_done == 1
-      end
+      # Note: this is overidden by extensions.
+      # def finished?
+      #   percent_done == 1
+      # end
 
       def reload!
         torrents = Torrent.find @ids, connector: @connector
