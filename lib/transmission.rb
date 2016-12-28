@@ -4,7 +4,7 @@ require_relative 'transmission/config'
 require_relative 'transmission/fields'
 require_relative 'transmission/arguments'
 require_relative 'transmission/utils'
-require_relative 'transmission/extensions/'
+require_relative 'transmission/extensions'
 
 module Transmission
   VERSION = '0.3.1'.freeze
