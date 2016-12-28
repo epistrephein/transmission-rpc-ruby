@@ -204,19 +204,19 @@ describe Transmission::Model::Torrent do
     end
   end
 
-  describe '#is_multi?' do
+  describe '#multi?' do
     let(:torrents) { Transmission::Model::Torrent.new([{'id' => 1}, {'id' => 2}], nil) }
     let(:torrent) { Transmission::Model::Torrent.new([{'id' => 1}], nil) }
 
     describe 'with multiple torrents' do
       it 'should return true' do
-        expect(torrents.is_multi?).to eq(true)
+        expect(torrents.multi?).to eq(true)
       end
     end
 
     describe 'with single torrent' do
       it 'should return false' do
-        expect(torrent.is_multi?).to eq(false)
+        expect(torrent.multi?).to eq(false)
       end
     end
   end

@@ -71,7 +71,7 @@ module Transmission
         connector.torrent_set_location @ids,  location: new_location, move: move
       end
 
-      def is_multi?
+      def multi?
         @ids.size > 1
       end
 
@@ -89,7 +89,7 @@ module Transmission
       end
 
       def to_json
-        if is_multi?
+        if multi?
           @torrents.inject([]) do |torrents, torrent|
             torrents << torrent.to_json
           end
