@@ -7,12 +7,12 @@ describe Transmission::Utils do
 
   subject { utils.new }
 
-  describe '.is_valid_key?' do
+  describe '.valid_key?' do
     describe 'with dashes' do
       let(:arguments) {[{field: 'test-me'}]}
 
       it 'should find valid key' do
-        expect(subject.is_valid_key?('test_me', arguments)).to eq(true)
+        expect(subject.valid_key?('test_me', arguments)).to eq(true)
       end
     end
 
@@ -20,7 +20,7 @@ describe Transmission::Utils do
       let(:arguments) {[{field: 'testMe'}]}
 
       it 'should find valid key' do
-        expect(subject.is_valid_key?('test_me', arguments)).to eq(true)
+        expect(subject.valid_key?('test_me', arguments)).to eq(true)
       end
     end
 
@@ -28,7 +28,7 @@ describe Transmission::Utils do
       let(:arguments) {[{field: 'testMe'}]}
 
       it 'should not find any key' do
-        expect(subject.is_valid_key?('i_dont_exit', arguments)).to eq(false)
+        expect(subject.valid_key?('i_dont_exit', arguments)).to eq(false)
       end
     end
   end

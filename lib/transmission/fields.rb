@@ -30,7 +30,7 @@ module Transmission
       include Transmission::Utils
 
       def is_valid?(key)
-        is_valid_key? key, self::ATTRIBUTES
+        valid_key? key, self::ATTRIBUTES
       end
 
       def real_key(key)

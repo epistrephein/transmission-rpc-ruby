@@ -1,6 +1,6 @@
 module Transmission
   module Utils
-    def is_valid_key?(key, attributes)
+    def valid_key?(key, attributes)
       !attributes.select do |attribute|
         option_keys(key).include? attribute[:field]
       end.empty?
