@@ -17,7 +17,7 @@ describe Transmission::Model::Torrent do
         @rpc = Transmission::RPC.new
         stub_rpc_request
           .with(body: torrent_get_body)
-          .to_return(successful_response( arguments: { torrents: [{ id: 1 }] }))
+          .to_return(successful_response(arguments: { torrents: [{ id: 1 }] }))
       end
 
       it 'should return a Torrent model instance' do
@@ -193,7 +193,7 @@ describe Transmission::Model::Torrent do
         stub_get_torrent({ ids: [1, 2] }, [{ id: 1 }, { id: 2 }])
         stub_rpc_request
           .with(body: torrent_remove_body(:ids => [1, 2], 'delete-local-data' => false))
-            .to_return(successful_response(arguments: { torrents: [{ id: 1 }, { id: 2 }]} ))
+          .to_return(successful_response(arguments: { torrents: [{ id: 1 }, { id: 2 }] }))
       end
 
       it 'should remove the torrent files' do
@@ -205,8 +205,8 @@ describe Transmission::Model::Torrent do
   end
 
   describe '#multi?' do
-    let(:torrents) { Transmission::Model::Torrent.new([{'id' => 1}, {'id' => 2}], nil) }
-    let(:torrent) { Transmission::Model::Torrent.new([{'id' => 1}], nil) }
+    let(:torrents) { Transmission::Model::Torrent.new([{ 'id' => 1 }, { 'id' => 2 }], nil) }
+    let(:torrent) { Transmission::Model::Torrent.new([{ 'id' => 1 }], nil) }
 
     describe 'with multiple torrents' do
       it 'should return true' do
@@ -233,7 +233,7 @@ describe Transmission::Model::Torrent do
 
     describe 'with single torrent' do
       it 'should return false' do
-        expect(torrent.to_json).to eq({ 'id' => 1 })
+        expect(torrent.to_json).to eq('id' => 1)
       end
     end
   end
@@ -256,11 +256,11 @@ describe Transmission::Model::Torrent do
   end
 
   describe '#method_missing' do
-    let(:torrent) { Transmission::Model::Torrent.new([{'id' => 1, 'name' => 'some name', 'some-key' => 'some-value'}], nil) }
+    let(:torrent) { Transmission::Model::Torrent.new([{ 'id' => 1, 'name' => 'some name', 'some-key' => 'some-value' }], nil) }
 
     before :each do
-      stub_const("Transmission::Fields::TorrentGet::ATTRIBUTES", [{field: 'id'}, {field: 'name'}, {field: 'some-key'}])
-      stub_const("Transmission::Arguments::TorrentSet::ATTRIBUTES", [{field: 'name'}])
+      stub_const('Transmission::Fields::TorrentGet::ATTRIBUTES', [{ field: 'id' }, { field: 'name' }, { field: 'some-key' }])
+      stub_const('Transmission::Arguments::TorrentSet::ATTRIBUTES', [{ field: 'name' }])
     end
 
     describe 'with existing attributes' do
@@ -292,14 +292,14 @@ describe Transmission::Model::Torrent do
   end
 
   describe '#save!' do
-    let(:rpc) {Transmission::RPC.new}
+    let(:rpc) { Transmission::RPC.new }
 
     before :each do
-      stub_const("Transmission::Arguments::TorrentSet::ATTRIBUTES", [{field: 'name'}, {field: 'ids'}])
-      stub_get_torrent({ids: [1]}, [{id: 1, name: 'test', comment: 'comment'}])
+      stub_const('Transmission::Arguments::TorrentSet::ATTRIBUTES', [{ field: 'name' }, { field: 'ids' }])
+      stub_get_torrent({ ids: [1] }, [{ id: 1, name: 'test', comment: 'comment' }])
       stub_rpc_request
-          .with(body: torrent_set_body({name: 'new value', ids: [1]}))
-          .to_return(successful_response)
+        .with(body: torrent_set_body(name: 'new value', ids: [1]))
+        .to_return(successful_response)
     end
 
     it 'should send the right parameters' do
@@ -310,28 +310,28 @@ describe Transmission::Model::Torrent do
   end
 
   [
-      {method: 'start!', rpc_method: 'torrent-start'},
-      {method: 'start_now!', rpc_method: 'torrent-start-now'},
-      {method: 'stop!', rpc_method: 'torrent-stop'},
-      {method: 'verify!', rpc_method: 'torrent-verify'},
-      {method: 're_announce!', rpc_method: 'torrent-reannounce'},
-      {method: 'move_up!', rpc_method: 'queue-move-up'},
-      {method: 'move_down!', rpc_method: 'queue-move-down'},
-      {method: 'move_top!', rpc_method: 'queue-move-top'},
-      {method: 'move_bottom!', rpc_method: 'queue-move-bottom'}
+    { method: 'start!', rpc_method: 'torrent-start' },
+    { method: 'start_now!', rpc_method: 'torrent-start-now' },
+    { method: 'stop!', rpc_method: 'torrent-stop' },
+    { method: 'verify!', rpc_method: 'torrent-verify' },
+    { method: 're_announce!', rpc_method: 'torrent-reannounce' },
+    { method: 'move_up!', rpc_method: 'queue-move-up' },
+    { method: 'move_down!', rpc_method: 'queue-move-down' },
+    { method: 'move_top!', rpc_method: 'queue-move-top' },
+    { method: 'move_bottom!', rpc_method: 'queue-move-bottom' }
   ].each do |object|
     describe "##{object[:method]}" do
-      let(:rpc) {Transmission::RPC.new}
+      let(:rpc) { Transmission::RPC.new }
 
       [
-          {ids: [1], response: [{id: 1}], text: ''},
-          {ids: [1, 2], response: [{id: 1}, {id: 2}], text: 'with multiple ids'}
+        { ids: [1], response: [{ id: 1 }], text: '' },
+        { ids: [1, 2], response: [{ id: 1 }, { id: 2 }], text: 'with multiple ids' }
       ].each do |args|
         before :each do
-          stub_get_torrent({ids: args[:ids]}, args[:response])
+          stub_get_torrent({ ids: args[:ids] }, args[:response])
           stub_rpc_request
-              .with(body: torrent_method_body(object[:rpc_method], {ids: args[:ids]}))
-              .to_return(successful_response)
+            .with(body: torrent_method_body(object[:rpc_method], ids: args[:ids]))
+            .to_return(successful_response)
         end
 
         it "should #{object[:method]} torrent #{args[:text]}" do
@@ -341,5 +341,4 @@ describe Transmission::Model::Torrent do
       end
     end
   end
-
 end

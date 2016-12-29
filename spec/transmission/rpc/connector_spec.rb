@@ -1,7 +1,5 @@
 describe Transmission::RPC::Connector do
-
   describe '#new' do
-
     describe 'without parameters' do
       before :each do
         @connector = Transmission::RPC::Connector.new
@@ -18,7 +16,16 @@ describe Transmission::RPC::Connector do
 
     describe 'with parameters' do
       before :each do
-        @connector = Transmission::RPC::Connector.new host: 'some.host', port: 8888, ssl: true, path: '/path', credentials: {username: 'a', password: 'b'}
+        @connector = Transmission::RPC::Connector.new(
+          host: 'some.host',
+          port: 8888,
+          ssl: true,
+          path: '/path',
+          credentials: {
+            username: 'a',
+            password: 'b'
+          }
+        )
       end
 
       it 'should create an RPC object with given parameters' do
@@ -26,22 +33,20 @@ describe Transmission::RPC::Connector do
         expect(@connector.port).to eq(8888)
         expect(@connector.ssl).to eq(true)
         expect(@connector.path).to eq('/path')
-        expect(@connector.credentials).to eq({username: 'a', password: 'b'})
+        expect(@connector.credentials).to eq(username: 'a', password: 'b')
       end
     end
-
   end
 
   describe '#post' do
-
     describe 'when session ID has not been acquired yet' do
       before :each do
         @connector = Transmission::RPC::Connector.new
         stub_rpc_request
-            .to_return(conflict_response({headers: {'x-transmission-session-id' => 'abc'}}))
+          .to_return(conflict_response(headers: { 'x-transmission-session-id' => 'abc' }))
         stub_rpc_request
-            .with(headers: {'x-transmission-session-id' => 'abc'})
-            .to_return(successful_response)
+          .with(headers: { 'x-transmission-session-id' => 'abc' })
+          .to_return(successful_response)
       end
 
       it 'should save the transmission session ID' do
@@ -54,7 +59,7 @@ describe Transmission::RPC::Connector do
       before :each do
         @connector = Transmission::RPC::Connector.new
         stub_rpc_request
-            .to_return(successful_response)
+          .to_return(successful_response)
       end
 
       it 'should respond successfully' do
@@ -67,7 +72,7 @@ describe Transmission::RPC::Connector do
       before :each do
         @connector = Transmission::RPC::Connector.new
         stub_rpc_request
-            .to_return(unauthorized_response)
+          .to_return(unauthorized_response)
       end
 
       it 'should raise auth error' do
@@ -76,7 +81,5 @@ describe Transmission::RPC::Connector do
         }.to raise_error(Transmission::RPC::Connector::AuthError)
       end
     end
-
   end
-
 end

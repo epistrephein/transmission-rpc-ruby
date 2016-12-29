@@ -9,7 +9,7 @@ describe Transmission::Utils do
 
   describe '.valid_key?' do
     describe 'with dashes' do
-      let(:arguments) {[{field: 'test-me'}]}
+      let(:arguments) { [{ field: 'test-me' }] }
 
       it 'should find valid key' do
         expect(subject.valid_key?('test_me', arguments)).to eq(true)
@@ -17,7 +17,7 @@ describe Transmission::Utils do
     end
 
     describe 'with camelcase' do
-      let(:arguments) {[{field: 'testMe'}]}
+      let(:arguments) { [{ field: 'testMe' }] }
 
       it 'should find valid key' do
         expect(subject.valid_key?('test_me', arguments)).to eq(true)
@@ -25,7 +25,7 @@ describe Transmission::Utils do
     end
 
     describe 'with invalid key' do
-      let(:arguments) {[{field: 'testMe'}]}
+      let(:arguments) { [{ field: 'testMe' }] }
 
       it 'should not find any key' do
         expect(subject.valid_key?('i_dont_exit', arguments)).to eq(false)
@@ -43,7 +43,7 @@ describe Transmission::Utils do
 
   describe '.option_key' do
     describe 'with dashes' do
-      let(:arguments) {[{field: 'test-me'}]}
+      let(:arguments) { [{ field: 'test-me' }] }
 
       it 'should return the correct key' do
         expect(subject.option_key('test_me', arguments)).to eq('test-me')
@@ -51,7 +51,7 @@ describe Transmission::Utils do
     end
 
     describe 'with camelcase' do
-      let(:arguments) {[{field: 'testMe'}]}
+      let(:arguments) { [{ field: 'testMe' }] }
 
       it 'should return the correct key' do
         expect(subject.option_key('test_me', arguments)).to eq('testMe')
@@ -59,7 +59,7 @@ describe Transmission::Utils do
     end
 
     describe 'with invalid key' do
-      let(:arguments) {[{field: 'testMe'}]}
+      let(:arguments) { [{ field: 'testMe' }] }
 
       it 'should return nil' do
         expect(subject.option_key('i_dont_exit', arguments)).to eq(nil)
