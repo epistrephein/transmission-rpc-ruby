@@ -22,12 +22,12 @@ module Transmission
         attributes['hashString']
       end
 
-      # Returns torrent size.
+      # Returns torrent size (in bytes).
       def length
         attributes['totalSize']
       end
 
-      # Returns torrent downloaded files size.
+      # Returns torrent downloaded files size (in bytes).
       def valid
         attributes['haveValid']
       end
@@ -49,12 +49,12 @@ module Transmission
         (attributes['uploadRatio'] * 1.0 / session.seed_ratio_limit).round(2)
       end
 
-      # Returns torrent download speed.
+      # Returns torrent download speed (in bytes).
       def speed_download
         attributes['rateDownload']
       end
 
-      # Returns torrent upload speed.
+      # Returns torrent upload speed (in bytes).
       def speed_upload
         attributes['rateUpload']
       end
@@ -64,9 +64,9 @@ module Transmission
         (attributes['uploadRatio'] * 1.0).round(2)
       end
 
-      # Returns torrent eta.
+      # Returns torrent eta (in seconds).
       def eta
-        pretty_time(attributes['eta']) if attributes['eta'] > 0
+        attributes['eta']
       end
 
       # Returns true if torrent is a single file.
@@ -102,6 +102,21 @@ module Transmission
       def smallest
         b = attributes['files'].min_by { |f| f['length'] }
         [File.basename(b['name']), b['length']]
+      end
+
+      # Returns torrent peers.
+      def peers
+        attributes['peersConnected'].size
+      end
+
+      # Returns torrent seeding peers.
+      def peers_seeding
+        attributes['peersSendingToUs']
+      end
+
+      # Returns torrent leeching peers.
+      def peers_leeching
+        attributes['peersGettingFromUs']
       end
 
       # Returns torrent error string.
