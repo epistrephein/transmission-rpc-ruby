@@ -1,6 +1,21 @@
 module Transmission
   module Model
     class Torrent
+      # Returns prettified torrent size.
+      def pretty_length
+        pretty_size(length)
+      end
+
+      # Returns prettified downloaded files size.
+      def pretty_valid
+        pretty_size(valid)
+      end
+
+      # Returns prettified eta.
+      def pretty_eta
+        pretty_time(attributes['eta']) if attributes['eta'] > 0
+      end
+
       private
 
       # Converts filesize to proper units.
