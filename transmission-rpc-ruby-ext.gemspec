@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.name          = 'transmission-rpc-ruby-ext'
   spec.version       = '0.1.1'
-  spec.date          = '2016-12-28'
+  spec.date          = '2016-12-31'
 
   spec.authors       = ['Tommaso Barbato']
   spec.email         = 'epistrephein@gmail.com'
